@@ -1,0 +1,10 @@
+---
+serialport:
+    usb_port: "/dev/ttyUSB0"
+    baud_rate: 115200
+    data_bits: 8
+    stop_bits: 1
+    parity: SerialPort::NONE
+
+rfidcodes:
+    file: 'config/univelop_500B.yml'

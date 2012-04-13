@@ -1,0 +1,59 @@
+####
+# RFID with TRF7970A EVM
+####
+
+####
+# Workflow - unix - by USB serial port
+####
+
+cu -l /dev/ttyUSB0 -s 115200
+[ENTER]
+
+response> SOF (0x01) Number of bytes 0x00 0x0304 Command + parameters EOF (0x0000)
+
+# init
+send> 0108000304FF0000
+response> TRF7970A EVM
+
+# An ISO15693 set protocol command sends three commands (register write, set AGC, and set receiver mode (AM/PM).
+
+# 0x10 register write
+send> 010C00030410002101000000
+response> 010C00030410002101000000
+
+# 0xF0 AGC selection 
+# 0x00 – AGC enable 
+send> 0109000304F0000000
+response> 0109000304F0000000
+
+# 0xF1 AM/PM input selection 
+# 0xFF – AM input 
+send> 0109000304F1FF0000
+response> 0109000304F0000000
+
+# 0x14 - ISO 15693 Inventory request
+# params: flags, anticollission cmd, mask length (3 bytes)
+# response: IRQ Status Register [<Tag response if any>, RSSI register value]
+send> 010B000304140401000000
+response> [tag]
+
+# flag: 0x24 - single slot
+send> 010B000304142401000000
+response> [tag]
+
+# 0x18 - Request command
+# params: flags, command code, data
+# command code 0x20 - read single block
+# response: 00 no tag error, 11 11 11 11 tag block data, 32 bits
+send> 010B000304180020000000
+response> [00 + 4bytes]
+
+# command code 0x23 - read multiple block
+# start block, length
+send> 010C00030418002301020000
+response> [00 + 12 bytes]
+
+# response : error code (00) + code
+# ex: 00303033303130393935373630
+# converted to ascii (http://www.dolcevie.com/js/converter.html)
+003010995760 (=filialID + tittelnummer)

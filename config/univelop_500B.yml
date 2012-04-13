@@ -1,0 +1,6 @@
+---
+initcodes:
+    init: "0108000304FF0000"
+    register_write_request: "010C00030410002101000000"
+    agc_enable: "0109000304F0000000"
+    am_input: "0109000304F1FF0000"
