@@ -1,10 +1,29 @@
 ---
 serialport:
-    usb_port: "/dev/ttyUSB0"
-    baud_rate: 115200
-    data_bits: 8
-    stop_bits: 1
-    parity: SerialPort::NONE
+  usb_port: "/dev/ttyUSB0"
+  baud_rate: 115200
+  data_bits: 8
+  stop_bits: 1
+  parity: SerialPort::NONE
 
 rfidcodes:
-    file: 'config/univelop_500B.yml'
+  config_file: 'config/univelop_500B.yml'
+  protocols:
+    - iso15693
+    - 14443A
+    - 14443B
+    - tagit
+    
+knowntags:
+  deichman:
+    protocol: iso15693
+    length: 10
+    byte_length: 0
+    start_offset: 0
+    extract_values:
+      barcode:
+        offset: 5
+        length: 14
+      bookid:
+        offset: 10
+        length: 6 
