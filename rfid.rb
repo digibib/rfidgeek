@@ -129,13 +129,17 @@ while true do
         end
         tagsettings['extract_values'].each do | name, options |
           p "#{name}: " + @result[options['offset'],options['length']]
+          if tagsettings['send_to_browser'][name]
+            # unix tool xdotool can send response to browser
+            `xdotool search --classname Navigator windowactivate --sync type --delay 5 --args 1 "#{@result[options['offset'],options['length']]}" key Return`
+          end
         end
       else
-        puts "still same tag ..."
+        puts "no new tag found ..."
       end 
     end # end case protocol
   end
-  sleep 3 # sleep before next loop
+  sleep 1 # sleep before next loop
 end  
 
 @sp.close  

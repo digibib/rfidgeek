@@ -17,9 +17,10 @@ rfidcodes:
 knowntags:
   deichman:
     protocol: iso15693
-    length: 10
+    length: 5
     byte_length: 0
     start_offset: 0
+    send_to_browser: bookid
     extract_values:
       barcode:
         offset: 5
