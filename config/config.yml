@@ -1,4 +1,6 @@
 ---
+debug: true
+
 serialport:
   usb_port: "/dev/ttyUSB0"
   baud_rate: 115200
@@ -26,5 +28,5 @@ knowntags:
         offset: 5
         length: 14
       bookid:
-        offset: 10
-        length: 6 
+        offset: 9
+        length: 7

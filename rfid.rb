@@ -6,6 +6,8 @@ CONFIG     = YAML::load_file('config/config.yml')
 RFIDCODES  = YAML::load_file(CONFIG['rfidcodes']['config_file'])
 SERIALPORT = CONFIG['serialport']
 
+$debug = CONFIG['debug']
+
 def initialize_serialport
   @sp = SerialPort.new(SERIALPORT['usb_port'], SERIALPORT['baud_rate'], SERIALPORT['data_bits'], SERIALPORT['stop_bits'], SerialPort::module_eval("#{SERIALPORT['parity']}"))
   @sp.read_timeout = 100
@@ -101,7 +103,7 @@ while true do
 #      p @sp.read
     when "iso15693"
       rfidcodes = RFIDCODES['protocols'][protocol]
-      puts "initializing ... " + protocol 
+      #puts "initializing ... " + protocol 
       initialize_request(rfidcodes['initcodes'])
       
       # read rfid tag uid
@@ -109,7 +111,8 @@ while true do
       res = @sp.read
       r = get_response(res)
       tag = get_tag(r)
-      if !tag.empty? and @tag != tag
+      if !tag.empty? and @tag != tag and tag.length == 16
+        puts "found tag: #{tag}" if $debug
         @tag = tag
         initialize_request(rfidcodes['initcodes'])
         byte_length = tagsettings['byte_length']
@@ -127,19 +130,20 @@ while true do
             break if offset == length
           end
         end
+        puts "rfidresult: " + @result.inspect if $debug
         tagsettings['extract_values'].each do | name, options |
-          p "#{name}: " + @result[options['offset'],options['length']]
+          puts "#{name}: " + @result[options['offset'],options['length']] if $debug
           if tagsettings['send_to_browser'][name]
             # unix tool xdotool can send response to browser
             `xdotool search --classname Navigator windowactivate --sync type --delay 5 --args 1 "#{@result[options['offset'],options['length']]}" key Return`
           end
         end
       else
-        puts "no new tag found ..."
+        puts "...reading..." if $debug
       end 
     end # end case protocol
   end
-  sleep 1 # sleep before next loop
+  #sleep 3 # sleep before next loop
 end  
 
 @sp.close  
