@@ -15,7 +15,7 @@ end
 
 def initialize_reader
   # send init
-  @sp.write RFIDCODES['initcodes']['init']
+  @sp.write RFIDCODES['initialize']['init']
   @sp.read
 end
 
@@ -117,7 +117,7 @@ while true do
         initialize_request(rfidcodes['initcodes'])
         byte_length = tagsettings['byte_length']
         offset = tagsettings['start_offset']
-        length = tagsettings['length']
+        taglength = tagsettings['taglength']
         @result = ""
         # read rfid content
         while true do
@@ -127,7 +127,7 @@ while true do
             @result += get_bytes(response)
             offset += byte_length + 1
             break if response == "W_OK"
-            break if offset == length
+            break if offset == taglength
           end
         end
         puts "rfidresult: " + @result.inspect if $debug

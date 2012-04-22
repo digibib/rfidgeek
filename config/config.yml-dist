@@ -17,9 +17,9 @@ rfidcodes:
     - tagit
     
 knowntags:
-  deichman:
+  dummytag:
     protocol: iso15693
-    length: 5
+    taglength: 5
     byte_length: 0
     start_offset: 0
     send_to_browser: bookid

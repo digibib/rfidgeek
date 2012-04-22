@@ -22,3 +22,25 @@
 ## Usage
 
 ruby rfid.rb
+
+## Requirements
+
+gem install serialport
+
+## Config
+
+config/config.yml
+ - serialport config
+ - yaml config for reader
+ - known tag setting
+config/univelop_500B.yml
+ - example reader config file
+
+## Reader config file
+
+communication specifications for reader:
+initialize codes, protocol codes and inventory codes
+
+## Todo
+
+add support for HTML5 websockets
