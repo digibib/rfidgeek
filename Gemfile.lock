@@ -1,14 +1,22 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    addressable (2.2.7)
     builder (3.0.0)
-    daemons (1.1.8)
+    em-websocket (0.3.6)
+      addressable (>= 2.1.1)
+      eventmachine (>= 0.12.9)
+    eventmachine (0.12.10)
+    logger (1.2.8)
     serialport (1.0.4)
+    web-socket-ruby (0.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   builder
-  daemons
+  em-websocket
+  logger
   serialport
+  web-socket-ruby

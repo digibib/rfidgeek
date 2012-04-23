@@ -42,7 +42,3 @@ config/univelop_500B.yml
 
 communication specifications for reader:
 initialize codes, protocol codes and inventory codes
-
-## Todo
-
-add support for HTML5 websockets

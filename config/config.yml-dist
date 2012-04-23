@@ -24,14 +24,14 @@ rfidcodes:
 knowntags:
   dummytag:
     protocol: iso15693
-    taglength: 5
-    byte_length: 0
-    start_offset: 0
+    length_to_read: 5
+    bytes_per_read: 0
+    start_offset: 1
     send_to_browser: bookid
     extract_values:
       barcode:
-        offset: 5
+        offset: 1
         length: 14
       bookid:
-        offset: 9
+        offset: 5
         length: 7

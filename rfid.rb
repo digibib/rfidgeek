@@ -63,9 +63,9 @@ def issue_command(protocol, cmd, cmd_length, options={})
       unless options[:flags] then options[:flags] = "00" end
       unless options[:command_code] then options[:command_code] = "00" end
       unless options[:offset] then options[:offset] = "00" end
-      unless options[:byte_length] then options[:byte_length] = "00" end
+      unless options[:bytes_per_read] then options[:bytes_per_read] = "00" end
       
-      @command = "01" + cmd_length.to_s + "000304" + cmd.to_s + options[:flags] + options[:command_code] + options[:offset] + options[:byte_length] + "0000"
+      @command = "01" + cmd_length.to_s + "000304" + cmd.to_s + options[:flags] + options[:command_code] + options[:offset] + options[:bytes_per_read] + "0000"
     when "iso14443"
       # iso14443 
       @command = "01" + cmd_length.to_s + "000304" + cmd.to_s
@@ -90,7 +90,7 @@ if CONFIG['websocket']
   websocket_server = fork do
     WebsocketServer.new(websocket['host'],websocket['port'],websocket['debug']).run
   end
-  sleep 0.5
+  sleep 0.5 # to allow server to initialize
   websocket_client = WebsocketClient.new(websocket['host'],websocket['port']).run
 end
 
@@ -128,19 +128,19 @@ while true do
         puts "found tag: #{tag}" if $debug
         @tag = tag
         initialize_request(rfidcodes['initcodes'])
-        byte_length = tagsettings['byte_length']
+        bytes_per_read = tagsettings['bytes_per_read']
         offset = tagsettings['start_offset']
-        taglength = tagsettings['taglength']
+        length_to_read = tagsettings['length_to_read']
         @result = ""
         # read rfid content
         while true do
-          read = issue_command(protocol, "18", "0C", :command_code => "23", :offset => "%02X" % offset, :byte_length => "%02X" % byte_length)
+          read = issue_command(protocol, "18", "0C", :command_code => "23", :offset => "%02X" % offset, :bytes_per_read => "%02X" % bytes_per_read)
           response = get_response(read)
           if !response.empty? 
             @result += get_bytes(response)
-            offset += byte_length + 1
+            offset += bytes_per_read + 1
             break if response == "W_OK"
-            break if offset == taglength
+            break if offset == length_to_read
           end
         end
         puts "rfidresult: " + @result.inspect if $debug
