@@ -1,0 +1,6 @@
+source "http://rubygems.org"
+gem "builder"
+gem "serialport"
+gem "em-websocket"
+gem "web_socket"
+gem "logger"

@@ -8,6 +8,11 @@ serialport:
   stop_bits: 1
   parity: SerialPort::NONE
 
+websocket:
+  host: localhost
+  port: 2000
+  debug: true
+
 rfidcodes:
   config_file: 'config/univelop_500B.yml'
   protocols:
@@ -15,7 +20,7 @@ rfidcodes:
     - 14443A
     - 14443B
     - tagit
-    
+
 knowntags:
   dummytag:
     protocol: iso15693

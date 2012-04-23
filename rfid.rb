@@ -7,6 +7,7 @@ RFIDCODES  = YAML::load_file(CONFIG['rfidcodes']['config_file'])
 SERIALPORT = CONFIG['serialport']
 
 $debug = CONFIG['debug']
+require_relative './lib/websocket_server.rb'
 
 def initialize_serialport
   @sp = SerialPort.new(SERIALPORT['usb_port'], SERIALPORT['baud_rate'], SERIALPORT['data_bits'], SERIALPORT['stop_bits'], SerialPort::module_eval("#{SERIALPORT['parity']}"))
@@ -81,6 +82,18 @@ end
   initialize_serialport.inspect
   initialize_reader
 
+  # setup websocket server, imported from ./lib/websocket_server.rb
+  # we need to daemonize server to a fork
+  
+if CONFIG['websocket']
+  websocket = CONFIG['websocket']
+  websocket_server = fork do
+    WebsocketServer.new(websocket['host'],websocket['port'],websocket['debug']).run
+  end
+  sleep 0.5
+  websocket_client = WebsocketClient.new(websocket['host'],websocket['port']).run
+end
+
   # 0x18 - Request command
   # params: flags, command code, data
   # command code 0x20 - read single block
@@ -135,7 +148,10 @@ while true do
           puts "#{name}: " + @result[options['offset'],options['length']] if $debug
           if tagsettings['send_to_browser'][name]
             # unix tool xdotool can send response to browser
-            `xdotool search --classname Navigator windowactivate --sync type --delay 5 --args 1 "#{@result[options['offset'],options['length']]}" key Return`
+            #`xdotool search --classname Navigator windowactivate --sync type --delay 5 --args 1 "#{@result[options['offset'],options['length']]}" key Return`
+            
+            # send tag to websocket server 
+            websocket_client.send("#{@result[options['offset'],options['length']]}")
           end
         end
       else
@@ -144,6 +160,12 @@ while true do
     end # end case protocol
   end
   #sleep 3 # sleep before next loop
+
+  # catch CTRL-C to kill server and websocket
+  trap("INT") do
+    Process.kill("INT", websocket_server)
+    exit
+  end
 end  
 
 @sp.close  

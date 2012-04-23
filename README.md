@@ -23,14 +23,16 @@
 
 ruby rfid.rb
 
-## Requirements
+## Installation -- use bundler and Gemfile
 
-gem install serialport
+gem install bundler
+bundle install
 
 ## Config
 
 config/config.yml
  - serialport config
+ - HTML5 websocket server config
  - yaml config for reader
  - known tag setting
 config/univelop_500B.yml
