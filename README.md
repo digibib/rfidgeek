@@ -31,12 +31,16 @@ bundle install
 ## Config
 
 config/config.yml
+ - example config file (use config.yml-dist as template)
  - serialport config
  - HTML5 websocket server config
  - yaml config for reader
  - known tag setting
 config/univelop_500B.yml
  - example reader config file
+
+NB! check permissions to /dev/ttyUSB0 or whatever device the reader spawns.
+On Ubuntu Precise you may need to add user to group dialout.
 
 ## Reader config file
 
