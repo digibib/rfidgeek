@@ -87,10 +87,10 @@ end
   
 if CONFIG['websocket']
   websocket = CONFIG['websocket']
-  websocket_server = fork do
-    WebsocketServer.new(websocket['host'],websocket['port'],websocket['debug']).run
-  end
-  sleep 0.5 # to allow server to initialize
+  #websocket_server = fork do
+  #  WebsocketServer.new(websocket['host'],websocket['port'],websocket['debug']).run
+  #end
+  #sleep 0.5 # to allow server to initialize
   websocket_client = WebsocketClient.new(websocket['host'],websocket['port']).run
 end
 
@@ -150,7 +150,7 @@ while true do
             # unix tool xdotool can send response to browser
             #`xdotool search --classname Navigator windowactivate --sync type --delay 5 --args 1 "#{@result[options['offset'],options['length']]}" key Return`
             
-            # send tag to websocket server 
+            # send tag to websocket sinatra-app
             websocket_client.send("#{@result[options['offset'],options['length']]}")
           end
         end
@@ -163,7 +163,7 @@ while true do
 
   # catch CTRL-C to kill server and websocket
   trap("INT") do
-    Process.kill("INT", websocket_server)
+    Process.kill("INT", websocket_client)
     exit
   end
 end  

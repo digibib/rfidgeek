@@ -60,7 +60,7 @@ class WebsocketClient
   end
   
   def run
-    @client = WebSocket.new("ws://#{@host}:#{@port}/")
+    @client = WebSocket.new("ws://#{@host}:#{@port}/example")
   end
 
   def send(data)
