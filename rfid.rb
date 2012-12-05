@@ -149,7 +149,8 @@ while true do
           if tagsettings['send_to_browser'][name]
             # unix tool xdotool can send response to browser
             #`xdotool search --classname Navigator windowactivate --sync type --delay 5 --args 1 "#{@result[options['offset'],options['length']]}" key Return`
-            
+            # wake screensaver if activated
+            %x[/usr/bin/xscreensaver-command -deactivate]
             # send tag to websocket server 
             websocket_client.send("#{@result[options['offset'],options['length']]}")
           end
