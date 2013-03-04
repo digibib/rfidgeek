@@ -25,7 +25,7 @@
         function init() {
 
           var Socket = "MozWebSocket" in window ? MozWebSocket : WebSocket;
-          var ws = new Socket("ws://localhost:2000/");
+          var ws = new Socket("ws://localhost:4567/");
           ws.onmessage = function(evt) { 
             //alert("Received tag: " + evt.data); 
             document.getElementById('display').innerHTML = evt.data;

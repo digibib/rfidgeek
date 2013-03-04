@@ -10,9 +10,15 @@ serialport:
 
 websocket:
   host: localhost
-  port: 2000
+  port: 4567
   debug: true
 
+websocket_server:
+  enable: false
+  host: localhost
+  port: 4567
+  debug: true
+  
 rfidcodes:
   config_file: 'config/univelop_500B.yml'
   protocols:
@@ -20,9 +26,9 @@ rfidcodes:
     - 14443A
     - 14443B
     - tagit
-
+    
 knowntags:
-  dummytag:
+  deichman:
     protocol: iso15693
     length_to_read: 5
     bytes_per_read: 0

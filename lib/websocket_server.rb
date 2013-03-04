@@ -5,6 +5,25 @@ require 'em-websocket'
 require 'web_socket'
 require 'logger'
 
+class WebsocketClient
+  def initialize(host,port)
+    @host = host
+    @port = port
+  end
+  
+  def run
+    @client = WebSocket.new("ws://#{@host}:#{@port}/ws")
+  end
+
+  def send(data)
+    @client.send(data)
+  end
+  
+  def close
+    @client.close()
+  end
+end
+
 class WebsocketServer
   
   def initialize(host,port,debug)
@@ -50,24 +69,5 @@ class WebsocketServer
 
   def broadcast(msg)
     @sockets.keys.each { |socket| socket.send(msg) }
-  end
-end
-
-class WebsocketClient
-  def initialize(host,port)
-    @host = host
-    @port = port
-  end
-  
-  def run
-    @client = WebSocket.new("ws://#{@host}:#{@port}/")
-  end
-
-  def send(data)
-    @client.send(data)
-  end
-  
-  def close
-    @client.close()
   end
 end

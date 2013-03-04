@@ -1,6 +1,6 @@
 # RFIDGEEK
 
-    RFIDGEEK - a ruby script to read RFID tags with Univelop generic reader
+    RFIDGEEK - a ruby script to read RFID tags with Univelop generic reader/writer
     Copyright (C) 2012 Benjamin Rokseth
     Reader described in (relatively inactive) http://www.rfidgeek.com/
 
@@ -25,19 +25,23 @@ ruby rfid.rb
 
 ## Installation -- use bundler and Gemfile
 
-gem install bundler
-bundle install
+    gem install bundler
+    bundle install
 
 ## Config
 
+Preferably use websockets to send tag as event. Demands a websocket server to accept connections.
+EventMachine server included, use config.yml to enable and set host:port
+
 config/config.yml
- - example config file (use config.yml-dist as template)
- - serialport config
- - HTML5 websocket server config
- - yaml config for reader
- - known tag setting
+* example config file (use config.yml-dist as template)
+* serialport config
+* HTML5 websocket server config
+* yaml config for reader
+* known tag setting
+
 config/univelop_500B.yml
- - example reader config file
+* example reader config file
 
 NB! check permissions to /dev/ttyUSB0 or whatever device the reader spawns.
 On Ubuntu Precise you may need to add user to group dialout.
@@ -45,4 +49,5 @@ On Ubuntu Precise you may need to add user to group dialout.
 ## Reader config file
 
 communication specifications for reader:
-initialize codes, protocol codes and inventory codes
+
+    initialize codes, protocol codes and inventory codes
