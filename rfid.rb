@@ -84,13 +84,18 @@ end
 
   # setup websocket server, imported from ./lib/websocket_server.rb
   # we need to daemonize server to a fork
-  
+
+ 
 if CONFIG['websocket']
-  websocket = CONFIG['websocket']
-  #websocket_server = fork do
-  #  WebsocketServer.new(websocket['host'],websocket['port'],websocket['debug']).run
-  #end
-  #sleep 0.5 # to allow server to initialize
+  # setup websocket server if needed
+  websocket        = CONFIG['websocket']
+  websocket_server = CONFIG['websocket_server']
+  if websocket_server['enable']
+    server = fork do
+      WebsocketServer.new(websocket_server['host'],websocket_server['port'],websocket_server['debug']).run
+    end
+    sleep 0.5 # to allow server to initialize
+  end
   websocket_client = WebsocketClient.new(websocket['host'],websocket['port']).run
 end
 
@@ -124,9 +129,14 @@ while true do
       res = @sp.read
       r = get_response(res)
       tag = get_tag(r)
-      if !tag.empty? and @tag != tag and tag.length == 16
-        puts "found tag: #{tag}" if $debug
+      # send events based on rfid status change
+
+      # New valid tag found!
+      if @tag.empty? and !tag.empty? and tag.length == 16
+      
         @tag = tag
+        puts "found new tag: #{@tag}" if $debug
+        
         initialize_request(rfidcodes['initcodes'])
         bytes_per_read = tagsettings['bytes_per_read']
         offset = tagsettings['start_offset']
@@ -152,11 +162,22 @@ while true do
             # wake screensaver if activated
             %x[/usr/bin/xscreensaver-command -deactivate]            
             # send tag to websocket sinatra-app
-            websocket_client.send("#{@result[options['offset'],options['length']]}")
+            websocket_client.send("#{@result[options['offset'],options['length']]}") if websocket_client
           end
         end
+      
+      elsif @tag == tag and !tag.empty?
+      
+        # Same tag found
+        puts "...same tag still..." if $debug
+      elsif !@tag.empty? and tag.empty?
+        # tag removed  
+        puts "...tag #{@tag} removed..." if $debug
+        websocket_client.send("tag removed") if websocket_client
+        @tag = ''
       else
-        puts "...reading..." if $debug
+        # no tag found ... ignore
+        puts "...no tag found..." if $debug
       end 
     end # end case protocol
   end
@@ -164,7 +185,7 @@ while true do
 
   # catch CTRL-C to kill server and websocket
   trap("INT") do
-    Process.kill("INT", websocket_client)
+    Process.kill("INT", server)
     exit
   end
 end  
