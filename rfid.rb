@@ -1,11 +1,6 @@
 require 'rubygems'
 require 'yaml'
-
-if RUBY_PLATFORM =~ /java/
-  require 'jruby/serialport'
-else  
-  require 'serialport'
-end
+require 'serialport'
 
 CONFIG     = YAML::load_file('config/config.yml')
 RFIDCODES  = YAML::load_file(CONFIG['rfidcodes']['config_file'])

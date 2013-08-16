@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/pmukerji/jruby-serialport.git
+  revision: 17997fb2446be27aaf9c227c9803890b6656a49a
+  specs:
+    jruby-serialport (0.0.1-java)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -7,16 +13,19 @@ GEM
       addressable (>= 2.1.1)
       eventmachine (>= 0.12.9)
     eventmachine (0.12.10)
+    eventmachine (0.12.10-java)
     logger (1.2.8)
     serialport (1.0.4)
     web-socket-ruby (0.1.0)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
   builder
   em-websocket
+  jruby-serialport!
   logger
   serialport
   web-socket-ruby
