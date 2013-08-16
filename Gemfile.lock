@@ -1,9 +1,3 @@
-GIT
-  remote: https://github.com/pmukerji/jruby-serialport.git
-  revision: 17997fb2446be27aaf9c227c9803890b6656a49a
-  specs:
-    jruby-serialport (0.0.1-java)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -25,7 +19,6 @@ PLATFORMS
 DEPENDENCIES
   builder
   em-websocket
-  jruby-serialport!
   logger
   serialport
   web-socket-ruby
