@@ -2,7 +2,7 @@ require 'rubygems'
 require 'yaml'
 
 if RUBY_PLATFORM =~ /java/
-  require 'jruby-serialport'
+  require 'jruby/serialport'
 else  
   require 'serialport'
 end
