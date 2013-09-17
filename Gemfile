@@ -3,4 +3,7 @@ gem "builder"
 gem "em-websocket"
 gem "web-socket-ruby"
 gem "logger"
-gem "serialport"
+
+platforms :ruby do
+  gem "serialport"
+end
