@@ -4,10 +4,6 @@ gem "em-websocket"
 gem "web-socket-ruby"
 gem "logger"
 
-platforms :jruby do
-  gem "jruby-serialport", :git => "git://github.com/pmukerji/jruby-serialport.git"
-end
-
 platforms :ruby do
   gem "serialport"
 end

@@ -70,7 +70,7 @@ def issue_command(protocol, cmd, cmd_length, options={})
       # iso14443 
       @command = "01" + cmd_length.to_s + "000304" + cmd.to_s
   end
-
+  #puts @command.to_s
   @sp.write @command.to_s
   response = @sp.read
 end
